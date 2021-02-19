@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="380.0" prefWidth="700.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controller.MyController">
+	<children>
+
+		<MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="700.0">
+			<menus>
+				<Menu fx:id="exit" mnemonicParsing="false" text="Exit">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Close" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem fx:id="sousMenuFile" mnemonicParsing="false"
+							onAction="#addFile" text="AddFile" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Etudiant">
+					<items>
+						<MenuItem fx:id="ajout" mnemonicParsing="false"
+							onAction="#ajouterEtudiant" text="Ajouter etudiant">
+							<graphic>
+								<ImageView fitHeight="20.0" fitWidth="20.0">
+									<image>
+										<Image url="@../../../../Desktop/add.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</MenuItem>
+						<SeparatorMenuItem mnemonicParsing="false" />
+						<MenuItem fx:id="liste" mnemonicParsing="false"
+							onAction="#afficherListe" text="Liste Etudiant">
+							<graphic>
+								<ImageView fitHeight="20.0" fitWidth="20.0">
+									<image>
+										<Image url="@../../../../Desktop/liste.png" />
+									</image>
+								</ImageView>
+							</graphic>
+						</MenuItem>
+					</items>
+				</Menu>
+				<Menu fx:id="help" mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem fx:id="aide" mnemonicParsing="false"
+							onAction="#actionHelp" text="Aide" />
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+		<TableView fx:id="table" layoutY="69.0" prefHeight="310.0"
+			prefWidth="700.0">
+			<columns>
+
+			</columns>
+		</TableView>
+		<Label layoutX="60.0" layoutY="42.0" prefHeight="17.0"
+			prefWidth="100.0" text="Search by name">
+			<font>
+				<Font size="13.0" />
+			</font>
+		</Label>
+		<TextField fx:id="search" layoutX="160.0" layoutY="39.0" prefHeight="25.0"
+			prefWidth="490.0" />
+		<Pane fx:id="afficheEtudiant" layoutX="-659.0" layoutY="27.0"
+			prefHeight="351.0" prefWidth="700.0"
+			style="-fx-background-color: #D3D3D3;" AnchorPane.leftAnchor="0.0">
+			<children>
+				<Label layoutX="263.0" layoutY="34.0"
+					text="Information Etudiant">
+					<font>
+						<Font size="19.0" />
+					</font>
+				</Label>
+				<ImageView fx:id="photo" fitHeight="200.0"
+					fitWidth="200.0" layoutX="393.0" layoutY="74.0" pickOnBounds="true"
+					preserveRatio="true" />
+				<Label fx:id="etudiantNom" layoutX="110.0" layoutY="109.0"
+					prefHeight="17.0" prefWidth="121.0" text="Label">
+					<font>
+						<Font size="20.0" />
+					</font>
+				</Label>
+				<Label fx:id="etudiantPrenom" layoutX="110.0" layoutY="159.0"
+					text="Label">
+					<font>
+						<Font size="20.0" />
+					</font>
+				</Label>
+				<Label fx:id="etudiantNaissance" layoutX="110.0"
+					layoutY="214.0" text="Date de naissance">
+					<font>
+						<Font size="20.0" />
+					</font>
+				</Label>
+			</children>
+		</Pane>
+		<Pane fx:id="formulaire" layoutX="-700.0" layoutY="27.0"
+			prefHeight="351.0" prefWidth="700.0"
+			style="-fx-background-color: #D3D3D3;" AnchorPane.leftAnchor="0.0">
+			<children>
+				<Label layoutX="249.0" layoutY="21.0"
+					text="Formulaire Etudiant">
+					<padding>
+						<Insets top="5.0" />
+					</padding>
+					<font>
+						<Font size="14.0" />
+					</font>
+				</Label>
+				<TextField fx:id="nomEtudiant" layoutX="276.0"
+					layoutY="71.0" />
+				<Label layoutX="207.0" layoutY="75.0" prefHeight="17.0"
+					prefWidth="47.0" text="NOM" />
+				<Label layoutX="183.0" layoutY="123.0" text="PRENOM" />
+				<TextField fx:id="prenomEtudiant" layoutX="276.0"
+					layoutY="119.0" />
+				<Label layoutX="174.0" layoutY="167.0" text="MOT PASSE" />
+				<Label layoutX="139.0" layoutY="208.0" text="DATE NAISSANCE" />
+				<DatePicker fx:id="naissanceEtudiant" layoutX="276.0"
+					layoutY="204.0" />
+				<PasswordField fx:id="mdpEtudiant" layoutX="276.0"
+					layoutY="163.0" />
+				<Button fx:id="validationButton" layoutX="515.0"
+					layoutY="299.0" mnemonicParsing="false" onAction="#validation"
+					prefHeight="25.0" prefWidth="95.0" text="Validation" />
+				<Button fx:id="buttonPhoto" layoutX="395.0" layoutY="246.0"
+					mnemonicParsing="false" onAction="#browser"
+					style="-fx-background-color: #FFFFFF;" text="Browser" />
+				<TextField fx:id="lienPhoto" layoutX="275.0"
+					layoutY="246.0" prefHeight="25.0" prefWidth="121.0" />
+				<Label layoutX="186.0" layoutY="250.0" text="PHOTO" />
+			</children>
+		</Pane>
+	</children>
+</AnchorPane>
