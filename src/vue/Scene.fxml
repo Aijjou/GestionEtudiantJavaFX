@@ -59,8 +59,10 @@
 				</Menu>
 			</menus>
 		</MenuBar>
+		<BorderPane fx:id="pane" layoutY="66.0" prefHeight="310.0"
+			prefWidth="700.0" />
 		<TableView fx:id="table" layoutY="69.0" prefHeight="310.0"
-			prefWidth="700.0">
+			prefWidth="700.0" AnchorPane.leftAnchor="0.0">
 			<columns>
 
 			</columns>
@@ -71,9 +73,9 @@
 				<Font size="13.0" />
 			</font>
 		</Label>
-		<TextField fx:id="search" layoutX="160.0" layoutY="39.0" prefHeight="25.0"
-			prefWidth="490.0" />
-		<Pane fx:id="afficheEtudiant" layoutX="-659.0" layoutY="27.0"
+		<TextField fx:id="search" layoutX="160.0" layoutY="39.0"
+			prefHeight="25.0" prefWidth="490.0" />
+		<Pane fx:id="afficheEtudiant" layoutX="-693.0" layoutY="29.0"
 			prefHeight="351.0" prefWidth="700.0"
 			style="-fx-background-color: #D3D3D3;" AnchorPane.leftAnchor="0.0">
 			<children>
@@ -83,9 +85,6 @@
 						<Font size="19.0" />
 					</font>
 				</Label>
-				<ImageView fx:id="photo" fitHeight="200.0"
-					fitWidth="200.0" layoutX="393.0" layoutY="74.0" pickOnBounds="true"
-					preserveRatio="true" />
 				<Label fx:id="etudiantNom" layoutX="110.0" layoutY="109.0"
 					prefHeight="17.0" prefWidth="121.0" text="Label">
 					<font>
@@ -104,9 +103,12 @@
 						<Font size="20.0" />
 					</font>
 				</Label>
+				<ImageView fx:id="photo" fitHeight="200.0"
+					fitWidth="200.0" layoutX="426.0" layoutY="65.0" pickOnBounds="true"
+					preserveRatio="true" />
 			</children>
 		</Pane>
-		<Pane fx:id="formulaire" layoutX="-700.0" layoutY="27.0"
+		<Pane fx:id="formulaire" layoutX="-456.0" layoutY="27.0"
 			prefHeight="351.0" prefWidth="700.0"
 			style="-fx-background-color: #D3D3D3;" AnchorPane.leftAnchor="0.0">
 			<children>

@@ -19,6 +19,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -31,6 +32,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -89,6 +91,8 @@ public class MyController implements Initializable {
 	private Label etudiantNaissance;
 	@FXML
 	private ImageView photo;
+	@FXML
+	private BorderPane pane;
 
 	@FXML
 	private Button buttonPhoto;
@@ -104,9 +108,9 @@ public class MyController implements Initializable {
 	private SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 
 	private IEtudiantService iserviceEtudiant = new EtudiantService();
-	private static final int ROWS_PER_PAGE = 4;
 
-	private FilteredList<Etudiant> filteredData;
+	private final static int dataSize = 10_023;
+	private final static int rowsPerPage = 5;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -121,34 +125,6 @@ public class MyController implements Initializable {
 			}
 		});
 
-//		search.textProperty().addListener((observable, oldValue, newValue) -> {
-//			filteredData.setPredicate(etudiant -> newValue == null || newValue.isEmpty()
-//					|| etudiant.getNomString().toLowerCase().contains(newValue.toLowerCase())
-//					|| etudiant.getPrenomString().toLowerCase().contains(newValue.toLowerCase()));
-//			changeTableView(pagination.getCurrentPageIndex(), ROWS_PER_PAGE);
-//		});
-//
-//		int totalPage = (int) (Math.ceil(5 * 1.0 / ROWS_PER_PAGE));
-//		pagination.setPageCount(totalPage);
-//		pagination.setCurrentPageIndex(0);
-//		changeTableView(0, ROWS_PER_PAGE);
-//		pagination.currentPageIndexProperty()
-//				.addListener((observable, oldValue, newValue) -> changeTableView(newValue.intValue(), ROWS_PER_PAGE));
-//
-//	}
-//
-//	private void changeTableView(int index, int limit) {
-//
-//		int fromIndex = index * limit;
-//		int toIndex = Math.min(fromIndex + limit, table.getItems().size());
-//
-//		int minIndex = Math.min(toIndex, filteredData.size());
-//		SortedList<Etudiant> sortedData = new SortedList<>(
-//				FXCollections.observableArrayList(filteredData.subList(Math.min(fromIndex, minIndex), minIndex)));
-//		sortedData.comparatorProperty().bind(table.comparatorProperty());
-//
-//		table.setItems(sortedData);
-//
 	}
 
 	public void browser() {
@@ -186,11 +162,11 @@ public class MyController implements Initializable {
 			etudiant = new Etudiant(nomEtudiant.getText(), prenomEtudiant.getText(), mdpEtudiant.getText(), pathString,
 					date);
 			System.out.println("validation");
-			
+
 			iserviceEtudiant.ajouterEtudiant(etudiant);
 
 			table.getItems().add(iserviceEtudiant.chercherUnetudiantParSonNom(etudiant.getNomString()));
-			
+
 		} else {
 			System.out.println("modification");
 			etudiant.setNomString(nomEtudiant.getText());
@@ -203,6 +179,8 @@ public class MyController implements Initializable {
 			table.getItems().remove(etudiant);
 			table.getItems().add(iserviceEtudiant.chercherUnEtudiantParSonId(etudiant.getId()));
 			validationButton.setText("Validation");
+			table.setVisible(true);
+			formulaire.setVisible(false);
 		}
 
 	}
@@ -328,7 +306,7 @@ public class MyController implements Initializable {
 						photo.setImage(image);
 
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 
@@ -356,39 +334,48 @@ public class MyController implements Initializable {
 
 				table.getItems().add(et);
 			}
-		}
-		// 1. Wrap the ObservableList in a FilteredList (initially display all data).
-		FilteredList<Etudiant> filteredData = new FilteredList<>(table.getItems(), p -> true);
 
-		// 2. Set the filter Predicate whenever the filter changes.
+//			int fromIndex = 1 * rowsPerPage;
+//			int toIndex = Math.min(fromIndex + rowsPerPage, 10);
+//			table.setItems(
+//					FXCollections.observableArrayList(iserviceEtudiant.listEtudiant().subList(fromIndex, toIndex)));
+
+			Pagination pagination = new Pagination((iserviceEtudiant.listEtudiant().size() / rowsPerPage + 1), 0);
+			pagination.setPageFactory(this::createPage);
+
+			pane.setCenter(pagination);
+
+		}
+
+		FilteredList<Etudiant> filteredData = new FilteredList<>(table.getItems(), p -> true);
 		search.textProperty().addListener((observable, oldValue, newValue) -> {
 			filteredData.setPredicate(etudiant -> {
-				// If filter text is empty, display all persons.
 				if (newValue == null || newValue.isEmpty()) {
 					return true;
 				}
-
-				// Compare first name and last name of every person with filter text.
 				String lowerCaseFilter = newValue.toLowerCase();
 
 				if (etudiant.getNomString().toLowerCase().contains(lowerCaseFilter)) {
-					return true; // Filter matches first name.
+					return true;
 				} else if (etudiant.getPrenomString().toLowerCase().contains(lowerCaseFilter)) {
-					return true; // Filter matches last name.
+					return true;
 				}
-				return false; // Does not match.
+				return false;
 			});
-			// 3. Wrap the FilteredList in a SortedList.
 			SortedList<Etudiant> sortedData = new SortedList<>(filteredData);
-
-			// 4. Bind the SortedList comparator to the TableView comparator.
 			sortedData.comparatorProperty().bind(table.comparatorProperty());
-
-			// 5. Add sorted (and filtered) data to the table.
 			table.setItems(sortedData);
 		});
-
 		table.setVisible(true);
+	}
+
+	private Node createPage(int pageIndex) {
+
+		int fromIndex = pageIndex * rowsPerPage;
+		int toIndex = Math.min(fromIndex + rowsPerPage, iserviceEtudiant.listEtudiant().size());
+		table.setItems(FXCollections.observableArrayList(iserviceEtudiant.listEtudiant().subList(fromIndex, toIndex)));
+
+		return new BorderPane(table);
 	}
 
 	public void actionHelp(ActionEvent e) {
